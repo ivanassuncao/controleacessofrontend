@@ -1,0 +1,62 @@
+<template>
+    <v-container fluid>
+        <v-layout>
+            <v-flex>
+                <v-layout column class="ma-3">
+                    <h1 class="title">Excluir Funcionário</h1>
+                    <v-divider class="mb-3" />
+                    <div v-if="erros">
+                        <Erros :erros="erros" />
+                    </div>
+                    <v-text-field class="caption" label="ID"
+                        v-model.number="filtro.id" />
+                    <v-text-field class="caption" label="Nome"
+                        v-model="filtro.nome_funcionario" />
+
+                    <v-btn color="error" class="ml-0 mt-3"
+                        @click="excluirFuncionario">
+                        Excluir Funcionário
+                    </v-btn>
+                </v-layout>
+            </v-flex>
+            <v-flex>
+                <v-layout column class="ma-3">
+                    <h1 class="title">Resultado</h1>
+                    <v-divider />
+                    <template v-if="dados">
+                        <v-text-field label="ID" readonly
+                            v-model="dados.id" />
+                        <v-text-field label="Nome" readonly
+                            v-model="dados.nome" />
+                        <v-text-field label="Rótulo" readonly
+                            v-model="dados.rotulo" />
+                    </template>
+                </v-layout>
+            </v-flex>
+        </v-layout>
+    </v-container>
+</template>
+
+<script>
+import Erros from '../comum/Erros'
+
+export default {
+    components: { Erros },
+    data() {
+        return {
+            filtro: {},
+            dados: null,
+            erros: null
+        }
+    },
+    methods: {
+        excluirFuncionario() {
+            // implementar
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>

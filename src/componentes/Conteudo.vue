@@ -5,10 +5,10 @@
 			<UsuarioLogado />
 		</v-flex>
 		<v-flex>
-			<v-tabs centered grow  height="60" light icons-and-text>
+			<v-tabs centered grow  height=50 light icons-and-text>
 				<v-tabs-slider color="cyan"></v-tabs-slider>
 
-				<v-tab>
+				<v-tab v-show="!usuario">
 					Autenticação
 					<v-icon >fingerprint</v-icon>
 				</v-tab>
@@ -48,7 +48,7 @@
 					<v-icon>present_to_all</v-icon>
 				</v-tab>
 
-				<v-tab-item>
+				<v-tab-item v-show="!usuario">
 					<AutenticacaoAbas />
 				</v-tab-item>
 
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import AutenticacaoAbas from './autenticacao/Abas'
 import UsuarioLogado from './autenticacao/UsuarioLogado'
 import UsuarioAbas from './usuario/Abas'
@@ -78,13 +79,16 @@ import PerfilAbas from './perfil/Abas'
 //import FuncionarioAbas from './funcionario/Abas'
 
 export default {
+	computed: {
+        ...mapGetters(['usuario'])
+    },
 	components: {
 		AutenticacaoAbas,
 		UsuarioLogado,
 		UsuarioAbas,
 		PerfilAbas,
-		//FuncionarioAbas
 	},
+
 }
 </script>
 

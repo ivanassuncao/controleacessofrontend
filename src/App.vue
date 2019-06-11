@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-toolbar app color="blue-grey" height="50" dark>
-      <v-toolbar-title class="headline text-uppercase">
+    <v-toolbar app color="blue-grey" height="55" dark>
+      <v-toolbar-title class="headline text-uppercase" >
         <span>Controle de Acesso </span>
         <span class="font-weight-light">Grupo Martins Lanna</span>
       </v-toolbar-title>
@@ -9,7 +9,7 @@
     </v-toolbar>
     <v-content
       id="scroll-target"
-      class="scroll-y"
+      class="scroll-y mt-2"
     >
      <v-layout
             column

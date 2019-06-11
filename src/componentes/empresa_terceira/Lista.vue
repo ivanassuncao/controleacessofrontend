@@ -3,8 +3,8 @@
         <v-layout column>
             <v-flex>
                 <v-btn color="primary" class="ml-0 mb-4"
-                    @click="obterFuncionarios">
-                    Obter Funcionários
+                    @click="obterEmpresaTerceiras">
+                    Obter Empresa Terceira
                 </v-btn>
             </v-flex>
             <v-flex>
@@ -13,12 +13,12 @@
                 </div>
             </v-flex>
             <v-flex>
-                <v-data-table :headers="headers" :items="perfis" 
+                <v-data-table :headers="headers" :items="empresa_terceiras" 
                     hide-actions class="elevation-1">
                     <template slot="items" slot-scope="props">
                         <td>{{ props.item.id }}</td>
-                        <td>{{ props.item.nome_funcionario }}</td>
-                        <td>{{ props.item.email_funcionario }}</td>
+                        <td>{{ props.item.nome_empresa_terceira }}</td>
+                        <td>{{ props.item.cnpj_cpf }}</td>
                     </template>
                 </v-data-table>
             </v-flex>
@@ -34,16 +34,16 @@ export default {
     data() {
         return {
             erros: null,
-            perfis: [],
+            empresa_terceiras: [],
             headers: [
                 { text: 'ID', value: 'id' },
-                { text: 'Nome', value: 'nome_funcionario' },
-                { text: 'E-mail', value: 'email_funcionario' },
+                { text: 'Nome', value: 'nome_empresa_terceira' },
+                { text: 'CPF/CNPJ', value: 'cnpj_cpf' },
             ],
         }
     },
     methods: {
-        obterFuncionarios() {
+        obterEmpresaTerceiras() {
             // implementar
         }
     }

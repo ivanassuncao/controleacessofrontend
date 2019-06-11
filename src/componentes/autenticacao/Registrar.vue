@@ -1,6 +1,9 @@
 <template>
     <v-container fluid>
         <v-layout >
+                <v-flex>
+               
+            </v-flex>
             <v-flex>
                 <v-layout  column  >
                     <h1 class="title">Registrar</h1>
@@ -21,20 +24,7 @@
                 </v-layout>
             </v-flex>
             <v-flex>
-                <v-layout  column class="ma-3">
-                    <h1 class="headline">Resultado</h1>
-                    <v-divider />
-                    <template v-if="dados">
-                        <v-text-field label="ID" readonly
-                            v-model="dados.id" />
-                        <v-text-field label="Nome" readonly
-                            v-model="dados.nome" />
-                        <v-text-field label="E-mail" readonly
-                            v-model="dados.email" />
-                        <v-text-field label="Perfis" readonly
-                            :value="perfis" />
-                    </template>
-                </v-layout>
+               
             </v-flex>
         </v-layout>
     </v-container>

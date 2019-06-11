@@ -1,24 +1,30 @@
 <template>
     <v-card v-if="usuario" class="ma-3 pa-2">
-        <v-layout fill-height align-center>
+        <v-layout align-center
+            justify-space-around
+             wrap>
+             <v-avatar color="indigo">
+                <v-icon dark>account_circle</v-icon>
+            </v-avatar>
+             <v-flex sm5 md3 hidden-xs-only>
+              <strong class="ma-2" v-html="usuario.nome"></strong>
+              <span
+                class="grey--text"
+              >
+                &nbsp;({{ usuario.email }})
+              </span>
+            </v-flex>
             <v-flex>
-                <span class="ml-3 headline"><strong>Nome: </strong></span>
-                <span class="headline blue--text text--darken-2">
-                    {{ usuario.nome }}</span>
 
-                <span class="ml-3 headline"><strong>Email: </strong></span>
-                <span class="headline blue--text text--darken-2">
-                    {{ usuario.email }}</span>
-
-                <span class="ml-3 headline"><strong>Perfis: </strong></span>
-                <span class="headline red--text text--darken-2">
+                <span class="ml-1 caption"><strong>Perfis: </strong></span>
+                <span class="caption red--text text--darken-2">
                     {{ perfis }}</span>
             </v-flex>
             <v-flex>
             </v-flex>
             <v-flex shrink>
-                <v-btn color="error"
-                    @click="setUsuario(null)">
+                <v-btn small=true color="error"
+                    @click="[setUsuario(null),refresh()]">
                     Sair
                 </v-btn>
             </v-flex>
@@ -37,7 +43,10 @@ export default {
             return this.usuario.perfis.map(p => p.nome).join(', ')
         }
     },
-    methods: mapActions(['setUsuario'])
+    methods: mapActions(['setUsuario']),
+            refresh(){
+                window.location.reload()
+            }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-toolbar app color="blue-grey" height="55" dark>
+    <v-toolbar app color="blue-grey" height="50" dark>
       <v-toolbar-title class="headline text-uppercase" >
         <span>Controle de Acesso </span>
         <span class="font-weight-light">Grupo Martins Lanna</span>
@@ -13,9 +13,6 @@
     >
      <v-layout
             column
-        align-center
-        justify-center
-      
       >
         <Conteudo />
       </v-layout>

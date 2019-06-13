@@ -1,24 +1,24 @@
 <template>
     <v-container fluid>
-        <v-tabs class="title" dark color="blue-grey darken-4"
+        <v-tabs class="title" dark height=35 color="blue-grey darken-4"
             slider-color="blue">
-            <v-tab ripple>
+            <v-tab class="caption" ripple>
                 Lista
             </v-tab>
 
-            <v-tab ripple>
+            <v-tab class="caption" ripple>
                 Consulta
             </v-tab>
 
-            <v-tab ripple>
+            <v-tab class="caption" ripple>
                 Novo
             </v-tab>
 
-            <v-tab ripple>
+            <v-tab class="caption" ripple>
                 Alterar
             </v-tab>
             
-            <v-tab ripple>
+            <v-tab class="caption" ripple>
                 Excluir
             </v-tab>
 

@@ -3,10 +3,10 @@
         <v-tabs
             class="title" dark color="blue-grey darken-4"
             slider-color="blue">
-            <v-tab ripple>
+            <v-tab class="caption" ripple>
                 Login
             </v-tab>
-            <v-tab ripple>
+            <v-tab class="caption" ripple>
                 Registrar
             </v-tab>
             <v-tab-item>

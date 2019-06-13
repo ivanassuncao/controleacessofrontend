@@ -8,11 +8,22 @@
                         <div v-if="erros">
                             <Erros :erros="erros" />
                         </div>
+                          <v-alert
+                            v-model="alert"
+                            dismissible
+                            class="caption"
+                            small
+                            type="success"
+                            transition="scale-transition"
+                            outline
+                            >
+                            Regitrado com Sucesso.
+                        </v-alert>
                         <v-text-field  class="caption" label="Nome"
                             v-model="perfil.nome" />
                         <v-text-field class="caption" label="Rótulo"
                             v-model="perfil.rotulo" />
-                        <v-btn color="success" class="ml-0 mt-3"
+                        <v-btn color="success" small outline class="caption ml-0 mt-3"
                             @click="novoPerfil">
                             Novo Perfil
                         </v-btn>
@@ -38,6 +49,7 @@
 
 <script>
 import Erros from '../comum/Erros'
+import gql from 'graphql-tag'
 
 export default {
     components: { Erros },
@@ -45,12 +57,40 @@ export default {
         return {
             perfil: {},
             dados: null,
-            erros: null
+            erros: null,
+            alert: false
         }
     },
     methods: {
         novoPerfil() {
-            // implementar
+           this.$api.mutate({
+               mutation: gql `
+                    mutation (
+                        $nome: String!
+                        $rotulo: String!
+                    ){
+                        novoPerfil(
+                            dados:{
+                                nome: $nome
+                                rotulo: $rotulo
+                            }
+                        ){
+                            id nome rotulo
+                        }
+                    }
+               `,
+               variables:{
+                   nome: this.perfil.nome,
+                   rotulo: this.perfil.rotulo
+               }
+           }).then(res =>{
+               this.dados = res.data.novoPerfil
+               this.perfil = {}
+               this.erros = null
+                this.alert = true
+           }).catch(e =>{
+               this.erros = e
+           })
         }
     }
 }

@@ -1,29 +1,42 @@
 <template>
-    <v-container fluid>
-        <v-layout>
-             <v-flex>
-             </v-flex>
-            <v-flex>
-                <v-layout column class="ma-3">
-                    <h1 class="title">Login</h1>
-                    <v-divider class="mb-3" />
-                        <div v-if="erros">
+ <div class="blue-grey lighten-5 text-xs-center">
+    <v-content>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md4>
+            <v-card class="elevation-12">
+              <v-toolbar dark  height="55" color="blue-grey">
+                <v-toolbar-title>Login</v-toolbar-title>
+                <v-spacer></v-spacer>
+   
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <v-btn icon large href="https://martinslanna.com.br" target="_blank" v-on="on">
+                      <v-icon large>mdi-codepen</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Codepen</span>
+                </v-tooltip>
+              </v-toolbar>
+              <v-card-text>
+                <v-form>
+                  <v-text-field prepend-icon="email" name="login" v-model="usuario.email" label="E-mail" type="text"></v-text-field>
+                  <v-text-field id="password" v-on:keyup.13="login" prepend-icon="lock" v-model="usuario.senha" name="password" label="Senha" type="password"></v-text-field>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn class="caption" flat small  @click="login">Acessar</v-btn>
+              </v-card-actions>
+              <div v-if="erros">
                             <Erros :erros="erros" />
                         </div>
-                        <v-text-field class="caption" label="E-mail"
-                            v-model="usuario.email" />
-                        <v-text-field class="caption" label="Senha"
-                            v-model="usuario.senha" type="password" />
-                        <v-btn color="primary" class="ml-0 mt-3"
-                            @click="login">
-                            Logar
-                        </v-btn>
-                </v-layout>
-            </v-flex>
-             <v-flex>
-             </v-flex>
+            </v-card>
+          </v-flex>
         </v-layout>
-    </v-container>
+      </v-container>
+    </v-content>
+ </div>
 </template>
 
 <script>

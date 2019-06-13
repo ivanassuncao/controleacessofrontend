@@ -1,6 +1,6 @@
 <template>
     <v-container fluid>
-        <v-layout>
+        <v-layout  row wrap align-center>
             <v-flex>
                 <v-layout column class="ma-3">
                     <h1 class="title">Filtrar Usuário</h1>
@@ -21,26 +21,35 @@
                         v-model="usuario.email" />
                     <v-text-field class="caption" label="Senha"
                         v-model="usuario.senha" type="password" />
-                    <v-select class="caption" label="Perfis"
+                    <v-flex xs6>
+                         <v-select class="caption" label="Perfis"
                         v-model="usuario.perfis"
                         :items="perfis"
                         item-value="id"
                         item-text="rotulo"
                         attach multiple
                         chips deletable-chips />
-                    <v-btn class="ml-0 mt-3"
+                    </v-flex>  
+                    <v-flex xs6>
+                    <v-btn class="caption ml-0 mt-3"
+                        outline
+                        small
                         @click="obterPerfis">
-                        Obter Perfis
+                        ...
                     </v-btn>
-                    <v-btn color="warning" class="ml-0 mt-3"
+                    </v-flex>   
+      
+                    <v-btn color="warning" class="caption ml-0 mt-3"
+                        outline
+                        small
                         @click="alterarUsuario">
                         Alterar Usuário
                     </v-btn>
                 </v-layout>
             </v-flex>
-            <v-flex>
+            <v-flex v-show="false">
                 <v-layout column class="ma-3">
-                    <h1 class="headline">Resultado</h1>
+                    <h1 class="title">Resultado</h1>
                     <v-divider />
                     <template v-if="dados">
                         <v-text-field label="ID" readonly
@@ -76,7 +85,7 @@ export default {
     computed: {
         perfisRotulos() {
             return this.dados && this.dados.perfis &&
-                this.dados.perfis.map(p => p.rotulo).join(', ')
+                this.dados.perfis.map(p => p.nome).join(', ')
         },
         perfisSelecionados() {
             if(this.usuario.perfis) {
@@ -88,7 +97,50 @@ export default {
     },
     methods: {
         alterarUsuario() {
-            // Implementar
+           this.$api.mutate({
+               mutation: gql `
+                    mutation (
+                        $idFiltro: Int
+                        $emailFiltro: String
+                        $nome: String
+                        $email: String
+                        $senha: String
+                        $perfis: [PerfilFiltro]
+
+                    ){
+                        alterarUsuario(
+                            filtro:{
+                                 id: $idFiltro
+                                 email: $emailFiltro
+                            }
+                           dados:{
+                                nome: $nome
+                                email: $email
+                                senha: $senha
+                                perfis: $perfis
+                           }
+                           
+                        ){
+                            id nome email perfis { nome }
+                        }
+                    }
+               `,
+               variables:{
+                   idFiltro: this.filtro.id,
+                   emailFiltro: this.filtro.email,
+                   nome: this.usuario.nome,
+                   email: this.usuario.email,
+                   senha: this.usuario.senha,
+                   perfis: this.perfisSelecionados
+               }
+           }).then( res => {
+               this.dados = res.data.alterarUsuario
+               this.usuario = {}
+               this.filtro = {}
+               this.erros = null
+           }).catch( e => {
+               this.erros = e
+           })
         },
         obterPerfis() {
           this.$api.query({

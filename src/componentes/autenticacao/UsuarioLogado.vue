@@ -23,8 +23,8 @@
             <v-flex>
             </v-flex>
             <v-flex shrink>
-                <v-btn small=true color="error"
-                    @click="[setUsuario(null),refresh()]">
+                <v-btn small outline class="caption" color="error"
+                    @click="setUsuario(null)">
                     Sair
                 </v-btn>
             </v-flex>
@@ -43,10 +43,7 @@ export default {
             return this.usuario.perfis.map(p => p.nome).join(', ')
         }
     },
-    methods: mapActions(['setUsuario']),
-            refresh(){
-                window.location.reload()
-            }
+    methods: mapActions(['setUsuario'])
 }
 </script>
 

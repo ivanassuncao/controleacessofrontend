@@ -8,42 +8,42 @@
 			<v-tabs centered grow  height=50 light icons-and-text>
 				<v-tabs-slider color="cyan"></v-tabs-slider>
 
-				<v-tab v-show="!usuario">
+				<v-tab class="caption" v-show="!usuario">
 					Autenticação
 					<v-icon >fingerprint</v-icon>
 				</v-tab>
 
-				<v-tab>
+				<v-tab class="caption" v-show="usuario">
 					Usuários
 					<v-icon>people</v-icon>
 				</v-tab>
 
-				<v-tab>
+				<v-tab class="caption" v-show="usuario">
 					Perfis
 					<v-icon>how_to_reg</v-icon>
 				</v-tab>
 
-				<v-tab>
+				<v-tab class="caption"  v-show="usuario">
 					Funcionários
 					<v-icon>people</v-icon>
 				</v-tab>
 
-				<v-tab>
+				<v-tab class="caption"  v-show="usuario">
 					Empresas Terceiras
 					<v-icon>business</v-icon>
 				</v-tab>
 
-				<v-tab>
+				<v-tab class="caption"  v-show="usuario">
 					Acesso Funcionário
 					<v-icon>call_split</v-icon>
 				</v-tab>
 
-				<v-tab>
+				<v-tab class="caption"  v-show="usuario">
 					Prestador de Serviço
 					<v-icon>business</v-icon>
 				</v-tab>
 
-				<v-tab>
+				<v-tab class="caption"  v-show="usuario">
 					Visitante
 					<v-icon>present_to_all</v-icon>
 				</v-tab>
@@ -52,11 +52,11 @@
 					<AutenticacaoAbas />
 				</v-tab-item>
 
-				<v-tab-item>
+				<v-tab-item  >
 					<UsuarioAbas />
 				</v-tab-item>
 
-				<v-tab-item>
+				<v-tab-item  >
 					<PerfilAbas />
 				</v-tab-item>
 

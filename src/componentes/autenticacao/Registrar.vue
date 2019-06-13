@@ -11,13 +11,24 @@
                         <div v-if="erros">
                             <Erros :erros="erros" />
                         </div>
+                         <v-alert
+                            v-model="alert"
+                            dismissible
+                            class="caption"
+                            small
+                            type="success"
+                            transition="scale-transition"
+                            outline
+                            >
+                            Regitrado com Sucesso.
+                        </v-alert>
                         <v-text-field class="caption" label="Nome"
                             v-model="usuario.nome" />
                         <v-text-field class="caption"  label="E-mail"
                             v-model="usuario.email" />
                         <v-text-field class="caption"  label="Senha"
                             v-model="usuario.senha" type="password" />
-                        <v-btn color="success" class="ml-0 mt-3"
+                        <v-btn color="success" outline small class="caption ml-0 mt-3"
                             @click="registrar">
                             Registrar
                         </v-btn>
@@ -40,7 +51,8 @@ export default {
         return {
             usuario: {},
             dados: null,
-            erros: null
+            erros: null,
+            alert: false
         }
     },
     computed: {
@@ -78,8 +90,10 @@ export default {
                 this.dados = res.data.registrarUsuario
                 this.usuario = {}
                 this.erros = null
+                this.alert = true
             }).catch(e=>{
                 this.erros = e
+                this.alert = false
             })
         }
     }

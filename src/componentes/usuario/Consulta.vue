@@ -12,7 +12,7 @@
                             v-model.number="filtro.id" />
                         <v-text-field class="caption" label="E-mail"
                             v-model="filtro.email" />
-                        <v-btn color="primary" class="ml-0 mt-3"
+                        <v-btn color="primary" small class="caption ml-0 mt-3"
                             @click="consultar">
                             Consultar
                         </v-btn>
@@ -20,7 +20,7 @@
             </v-flex>
             <v-flex>
                 <v-layout column class="ma-3">
-                    <h1 class="titel">Resultado</h1>
+                    <h1 class="title">Resultado</h1>
                     <v-divider />
                     <template v-if="dados">
                         <v-text-field label="ID" readonly
@@ -40,6 +40,7 @@
 
 <script>
 import Erros from '../comum/Erros'
+import gql from 'graphql-tag'
 
 export default {
     components: { Erros },
@@ -54,12 +55,39 @@ export default {
     computed: {
         perfisRotulos() {
             return this.dados && this.dados.perfis &&
-                this.dados.perfis.map(p => p.rotulo).join(', ')
+                this.dados.perfis.map(p => p.nome).join(', ')
         }
     },
     methods: {
         consultar() {
-            // implementar
+                    this.$api.query({
+                        query: gql `
+                            query (
+                                $id: Int
+                                $email: String
+                            ){
+                                usuario (
+                                    filtro:{
+                                        id: $id
+                                        email: $email
+                                    }
+                                ){
+                                    id nome email perfis { nome }
+                                }
+                            }
+                        `,
+                        variables:{
+                            id: this.filtro.id,
+                            email: this.filtro.email
+                            },
+                        fetchPolicy: 'network-only'
+                    }).then(res=>{
+                        this.dados = res.data.usuario
+                        this.filtro = {}
+                        this.erros = null
+                    }).catch(e=>{
+                        this.erros = e
+                    })
         }
     }
 }

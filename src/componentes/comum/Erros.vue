@@ -1,7 +1,11 @@
 <template>
     <div v-if="itens">
         <v-alert v-for="i in itens"
-            :key="i.message" :value="true" type="error">
+            :key="i.message" :value="true" 
+            transition="scale-transition"
+            dismissible
+            outline
+            type="error">
             {{ i.message }}
         </v-alert>
     </div>

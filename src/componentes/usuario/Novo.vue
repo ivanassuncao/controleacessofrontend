@@ -8,24 +8,36 @@
                         <div v-if="erros">
                             <Erros :erros="erros" />
                         </div>
-                        <v-text-field label="Nome"
+                         <v-alert
+                            v-model="alert"
+                            dismissible
+                            class="caption"
+                            small
+                            type="success"
+                            transition="scale-transition"
+                            outline
+                            >
+                            Regitrado com Sucesso.
+                        </v-alert>
+                        <v-text-field class="caption" label="Nome"
                             v-model="usuario.nome" />
-                        <v-text-field label="E-mail"
+                        <v-text-field class="caption" label="E-mail"
                             v-model="usuario.email" />
-                        <v-text-field label="Senha"
+                        <v-text-field class="caption" label="Senha"
                             v-model="usuario.senha" type="password" />
-                        <v-select label="Perfis"
+                        <v-select class="caption" label="Perfis"
                             v-model="usuario.perfis"
                             :items="perfis"
                             item-value="id"
                             item-text="rotulo"
                             attach multiple
+                            small
                             chips deletable-chips />
-                        <v-btn class="ml-0 mt-3"
+                        <v-btn small outline class=" caption ml-0 mt-3"
                             @click="obterPerfis">
                             Obter Perfis
                         </v-btn>
-                        <v-btn color="primary" class="ml-0 mt-3"
+                        <v-btn small outline color="primary" class="caption ml-0 mt-3"
                             @click="novoUsuario">
                             Novo Usuário
                         </v-btn>
@@ -33,7 +45,7 @@
             </v-flex>
             <v-flex>
                 <v-layout column class="ma-3">
-                    <h1 class="headline">Resultado</h1>
+                    <h1 class="title">Resultado</h1>
                     <v-divider />
                     <template v-if="dados">
                         <v-text-field label="ID" readonly
@@ -62,13 +74,14 @@ export default {
             usuario: {},
             perfis: [],
             dados: null,
-            erros: null
+            erros: null,
+            alert: false
         }
     },
     computed: {
         perfisRotulos() {
             return this.dados && this.dados.perfis &&
-                this.dados.perfis.map(p => p.rotulo).join(', ')
+                this.dados.perfis.map(p => p.nome).join(', ')
         },
         perfisSelecionados() {
             if(this.usuario.perfis) {
@@ -80,11 +93,45 @@ export default {
     },
     methods: {
         novoUsuario() {
-            // implementar
+           this.$api.mutate({
+               mutation: gql `
+                    mutation (
+                        $nome: String!
+                        $email: String!
+                        $senha: String!
+                        $perfis: [PerfilFiltro]
+                    ){
+                        novoUsuario (
+                            dados:{
+                                nome: $nome
+                                email: $email
+                                senha: $senha
+                                perfis: $perfis
+                            }
+                        ){
+                            id nome email perfis { nome }
+                        }
+                    }
+               `,
+               variables:{
+                   nome: this.usuario.nome,
+                   email: this.usuario.email,
+                   senha: this.usuario.senha,
+                   perfis: this.perfisSelecionados
+               }
+           }).then(res=>{
+               this.dados = res.data.novoUsuario
+               this.usuario = {}
+               this.erros = null
+               this.alert = true
+           }).catch(e=>{
+               this.erros = e
+           })
         },
         obterPerfis() {
             this.$api.query({
-                query: gql`{ perfis { id rotulo } }`
+                query: gql`{ perfis { id rotulo } }`,
+                fecthPolicy: 'network-only'
             }).then(res =>{
                 this.perfis = res.data.perfis
                 this.erros = null

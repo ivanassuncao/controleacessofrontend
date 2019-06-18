@@ -5,10 +5,13 @@
               <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on }">
                   <v-flex>
-                       <v-btn color="success" small outline dark class="caption  ml-0 mb-2" v-on="on"  @click="[obterPerfis,flagUsuario = false,usuario = {}] " >Novo Usuário</v-btn>
+                       <v-btn color="success" small outline dark class="caption  ml-0 mb-2" v-on="on"  @click="[obterPerfis,flagUsuario = false,usuario = {}] " >Novo Usuário
+                             <v-icon dark right>add</v-icon>
+                       </v-btn>
                         <v-btn small color="primary" outline class="caption  ml-0 mb-2"
                     @click="obterUsuarios">
                     Listar Usuários
+                     <v-icon dark right>search</v-icon>
                 </v-btn>
                   </v-flex>
                 </template>
@@ -59,7 +62,7 @@
             <v-btn
             color="green darken-1"
                 flat="flat"
-                @click="dialogExcluir = false"
+                @click="[dialogExcluir = false,naoConfirmaExclusaoUsuario()]"
             >
                 Não Excluir
             </v-btn>
@@ -67,7 +70,7 @@
             <v-btn
                 color="green darken-1"
                 flat="flat"
-                @click="dialogExcluir = false"
+                @click="[dialogExcluir = false,confirmaExclusaoUsuario()]"
             >
                 Excluir
             </v-btn>
@@ -75,13 +78,25 @@
         </v-card>
     </v-dialog>
             <v-flex>
-                  <v-text-field class="caption" label="E-mail"
+                  <v-text-field class="caption" label="Nome"
                             v-model="search" />
             </v-flex>
             <v-flex>
                 <div v-if="erros" class="caption mb-4">
                     <Erros :erros="erros" />
                 </div>
+                 <v-alert
+                    v-model="alert"
+                    dismissible
+                    class="caption mb-4 "
+                    small
+                    @click="obterUsuarios"
+                    type="success"
+                    transition="scale-transition"
+                    outline
+                >
+                   Regitrado com Sucesso.
+                </v-alert>  
             </v-flex>
             <v-flex>
                 <v-data-table :pagination.sync="pagination" :total-items="totalUsuarios" :headers="headers" :items="filteredList" 
@@ -158,8 +173,10 @@ export default {
             editedIndex: -1,
             erros: null,
             perfis: [],
+            alert: false,
             usuarios: [],
             usuario: {},
+            dados: null,
             headers: [
                 { text: 'ID', value: 'id' },
                 { text: 'Nome', value: 'name' },
@@ -272,6 +289,7 @@ export default {
                     this.usuario = {}
                     this.filtro = {}
                     this.erros = null
+                    this.alert = true
                     this.flagUsuario = false
                 }).catch( e => {
                     this.erros = e
@@ -313,6 +331,39 @@ export default {
         close () {
             this.dialog = false
         },
+        confirmaExclusaoUsuario(){
+              this.$api.mutate({
+               mutation: gql`
+                    mutation (
+                        $id: Int
+                        $email: String
+                    ){
+                        excluirUsuario(
+                             filtro:{
+                                id: $id
+                                email: $email
+                            }
+                        ){
+                            id nome email
+                        } 
+                    }
+               `,
+               variables:{
+                   id: this.usuario.id,
+                   email: this.usuario.email
+               }
+           }).then( res =>{
+                   this.dados = res.data.excluirUsuario
+                   this.erros = null
+                   this.alert = true
+                   this.filtro = {} 
+           }).catch(e =>{
+               this.erros = e
+           })
+        },
+        naoConfirmaExclusaoUsuario(){
+             this.usuario = {}
+        }
 
     },
     mounted(){

@@ -1,6 +1,7 @@
 <template>
 
 	<v-layout column>
+
 		<v-flex>
 			<UsuarioLogado />
 		</v-flex>
@@ -21,6 +22,11 @@
 				<v-tab class="caption" v-show="usuario">
 					Perfis
 					<v-icon>how_to_reg</v-icon>
+				</v-tab>
+				
+				<v-tab class="caption"  v-show="usuario">
+					Empresas
+					<v-icon>business</v-icon>
 				</v-tab>
 
 				<v-tab class="caption"  v-show="usuario">
@@ -61,7 +67,15 @@
 				</v-tab-item>
 
 				<v-tab-item>
-					<!--FuncionarioAbas /-->
+					<EmpresaAbas />
+				</v-tab-item>
+
+				<v-tab-item>
+					<FuncionarioAbas />
+				</v-tab-item>
+
+				<v-tab-item>
+					<EmpresaTerceiraoAbas />
 				</v-tab-item>
 
 			</v-tabs>
@@ -76,7 +90,9 @@ import AutenticacaoAbas from './autenticacao/Abas'
 import UsuarioLogado from './autenticacao/UsuarioLogado'
 import UsuarioAbas from './usuario/Abas'
 import PerfilAbas from './perfil/Abas'
-//import FuncionarioAbas from './funcionario/Abas'
+import FuncionarioAbas from './funcionario/Abas'
+import EmpresaTerceiraoAbas from './empresa_terceira/Abas'
+import EmpresaAbas from './empresa/Abas'
 
 export default {
 	computed: {
@@ -87,6 +103,9 @@ export default {
 		UsuarioLogado,
 		UsuarioAbas,
 		PerfilAbas,
+		FuncionarioAbas,
+		EmpresaTerceiraoAbas,
+		EmpresaAbas
 	},
 
 }

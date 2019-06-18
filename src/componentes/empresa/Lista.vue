@@ -5,28 +5,28 @@
               <v-dialog v-model="dialog" max-width="500px">
               <template v-slot:activator="{ on }">
                   <v-flex>
-                       <v-btn color="success" small outline dark class="caption  ml-0 mb-2" v-on="on"  @click="[flagFuncionario = false,funcionario = {}] " >Novo Funcionário
+                       <v-btn color="success" small outline dark class="caption  ml-0 mb-2" v-on="on"  @click="[flagempresa = false,empresa = {}] " >Nova Empresa
                              <v-icon dark right>add</v-icon>
                        </v-btn>
                         <v-btn small color="primary" outline class="caption  ml-0 mb-2"
-                    @click="obterFuncionarios">
-                    Listar Funcionários
+                    @click="obterEmpresas">
+                    Listar Empresas
                      <v-icon dark right>search</v-icon>
                 </v-btn>
                   </v-flex>
                 </template>
          <v-card>
           <v-card-title>
-            <span class="title">Registro de Funcionário</span>
+            <span class="title">Registro de Empresa</span>
           </v-card-title>
 
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex >
-                    <v-text-field v-model="funcionario.nome_funcionario" label="Nome" class="caption"></v-text-field>
-                    <v-text-field v-model="funcionario.email_funcionario" label="E-mail" class="caption"></v-text-field>
-                    <v-checkbox v-model="funcionario.ativo" label="Ativo" class="caption" ></v-checkbox>
+                    <v-text-field v-model="empresa.nome_empresa" label="Nome" class="text-uppercase caption"></v-text-field>
+                    <v-text-field v-model="empresa.cnpj" mask="##.###.###/####-##" label="CNPJ" class="caption"></v-text-field>
+                    <v-checkbox v-model="empresa.ativo" label="Ativo" class="caption" ></v-checkbox>
                 </v-flex>
                 
               </v-layout>
@@ -36,7 +36,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" flat @click="close">Fechar</v-btn>
-            <v-btn color="blue darken-1" flat @click="salvarFuncionario">Salvar</v-btn>
+            <v-btn color="blue darken-1" flat @click="salvarEmpresa">Salvar</v-btn>
           </v-card-actions>
         </v-card>
     </v-dialog>
@@ -53,7 +53,7 @@
             <v-btn
             color="green darken-1"
                 flat="flat"
-                @click="[dialogExcluir = false,naoConfirmaExclusaoFuncionario()]"
+                @click="[dialogExcluir = false,naoConfirmaExclusaoEmpresa()]"
             >
                 Não Excluir
             </v-btn>
@@ -61,7 +61,7 @@
             <v-btn
                 color="green darken-1"
                 flat="flat"
-                @click="[dialogExcluir = false,confirmaExclusaoFuncionario()]"
+                @click="[dialogExcluir = false,confirmaExclusaoEmpresa()]"
             >
                 Excluir
             </v-btn>
@@ -81,7 +81,7 @@
                     dismissible
                     class="caption mb-4 "
                     small
-                    @click="obterFuncionarios"
+                    @click="obterEmpresas"
                     type="success"
                     transition="scale-transition"
                     outline
@@ -90,26 +90,26 @@
                 </v-alert>
             </v-flex>
             <v-flex>
-                <v-data-table :pagination.sync="pagination" :total-items="totalFuncionarios" :headers="headers" :items="filteredList" 
+                <v-data-table :pagination.sync="pagination" :total-items="totalempresas" :headers="headers" :items="filteredList" 
                     hide-actions class="elevation-1">
                     <template slot="items" slot-scope="props">
                         <td>{{ props.item.id }}</td>
-                        <td>{{ props.item.nome_funcionario }}</td>
-                        <td>{{ props.item.email_funcionario }}</td>
+                        <td>{{ props.item.nome_empresa }}</td>
+                        <td>{{ props.item.cnpj }}</td>
                         <td>{{ getValorBoleano(props.item.ativo) }}</td>
                         <td class="justify-center layout px-0">
                             
                             <v-icon
                                 small
                                 class="mr-2"
-                                @click="alterarFuncionario(props.item)"
+                                @click="alterarEmpresa(props.item)"
                             >
                                 edit
                             </v-icon>
                              
                             <v-icon
                                 small
-                                @click="[excluirFuncionario(props.item),dialogExcluir = true]"
+                                @click="[excluirEmpresa(props.item),dialogExcluir = true]"
                             >
                                 delete
                             </v-icon>
@@ -129,8 +129,8 @@ import gql from 'graphql-tag'
 export default {
     computed:{
         filteredList() {
-        return this.funcionarios.filter(funcionario => {
-        return funcionario.nome_funcionario.toLowerCase().includes(this.search.toLowerCase())
+        return this.empresas.filter(empresa => {
+        return empresa.nome_empresa.toLowerCase().includes(this.search.toLowerCase())
             })
         }
     },
@@ -144,21 +144,21 @@ export default {
         return {
             dialog: false,
             dialogExcluir: false,
-            totalFuncionarios: 0,
-            flagFuncionario: false,
+            totalempresas: 0,
+            flagempresa: false,
             pagination: {},
             search: '',
             editedIndex: -1,
             erros: null,
             perfis: [],
             alert: false,
-            funcionarios: [],
-            funcionario: {},
+            empresas: [],
+            empresa: {},
             dados: null,
             headers: [
                 { text: 'ID', value: 'id' },
-                { text: 'Nome', value: 'nome_funcionario' },
-                { text: 'E-mail', value: 'email_funcionario' },
+                { text: 'Nome', value: 'nome_empresa' },
+                { text: 'CNPJ', value: 'cnpj' },
                 { text: 'Ativo', value: 'valorboleano' }, 
                 { text: 'Ações', value: 'name', sortable: false }
                
@@ -166,61 +166,61 @@ export default {
         }
     },
     methods: {
-        obterFuncionarios() {
+        obterEmpresas() {
 
                 this.$api.query({
                 query: gql`
                     query {
-                        funcionarios {
-                            id nome_funcionario email_funcionario ativo
+                        empresas {
+                            id nome_empresa cnpj ativo
                         }
                     }
                 `,
                 fetchPolicy: 'network-only'
                 }).then( res =>{
-                    this.funcionarios = res.data.funcionarios
-                    this.totalFuncionarios = this.funcionarios.length
+                    this.empresas = res.data.empresas
+                    this.totalempresas = this.empresas.length
                     this.erros = null
                 }).catch( e =>{
-                    this.funcionarios = []
+                    this.empresas = []
                     this.erros = e 
                 })
                 
               
         },
-        salvarFuncionario() {
+        salvarEmpresa() {
 
-             if(!this.flagFuncionario){
+             if(!this.flagempresa){
                   this.$api.mutate({
                     mutation: gql `
                         mutation (
-                            $nome_funcionario: String!
-                            $email_funcionario: String!
+                            $nome_empresa: String!
+                            $cnpj: String!
                             $ativo: Boolean
                         ){
-                            novoFuncionario (
+                            novaEmpresa (
                                 dados:{
-                                    nome_funcionario: $nome_funcionario
-                                    email_funcionario: $email_funcionario
+                                    nome_empresa: $nome_empresa
+                                    cnpj: $cnpj
                                     ativo: $ativo
                                 }
                             ){
-                                id nome_funcionario email_funcionario ativo
+                                id nome_empresa cnpj ativo
                             }
                         }
                `,
                variables:{
-                   nome_funcionario: this.funcionario.nome_funcionario,
-                   email_funcionario: this.funcionario.email_funcionario,
-                   ativo: this.funcionario.ativo
+                   nome_empresa: this.empresa.nome_empresa,
+                   cnpj: this.empresa.cnpj,
+                   ativo: this.empresa.ativo
                }
            }).then(res=>{
-                this.dados = res.data.novoFuncionario
-                this.funcionario = {}
+                this.dados = res.data.novaEmpresa
+                this.empresa = {}
                 this.erros = null
                 this.alert = true
                 this.dialog = false
-                this.flagFuncionario = false  
+                this.flagempresa = false  
            }).catch(e=>{
                this.erros = e
            })
@@ -229,66 +229,66 @@ export default {
                  mutation: gql `
                     mutation (
                         $idFiltro: Int
-                        $nome_funcionario: String
-                        $email_funcionario: String
-                         $ativo: Boolean
+                        $nome_empresa: String
+                        $cnpj: String
+                        $ativo: Boolean
 
                     ){
-                        alterarFuncionario(
+                        alterarEmpresa(
                             filtro:{
                                  id: $idFiltro
                             }
                            dados:{
-                                nome_funcionario: $nome_funcionario
-                                email_funcionario: $email_funcionario
+                                nome_empresa: $nome_empresa
+                                cnpj: $cnpj
                                 ativo: $ativo
                            }
                            
                         ){
-                            id nome_funcionario email_funcionario ativo
+                            id nome_empresa cnpj ativo
                         }
                     }
                `,
                     variables:{
-                        idFiltro: this.funcionario.id,
-                        nome_funcionario: this.funcionario.nome_funcionario,
-                        email_funcionario: this.funcionario.email_funcionario,
-                        ativo: this.funcionario.ativo
+                        idFiltro: this.empresa.id,
+                        nome_empresa: this.empresa.nome_empresa,
+                        cnpj: this.empresa.cnpj,
+                        ativo: this.empresa.ativo
 
                     }
                 }).then( res => {
-                    this.dados = res.data.alterarFuncionario
-                    this.funcionario = {}
+                    this.dados = res.data.alterarEmpresa
+                    this.empresa = {}
                     this.filtro = {}
                     this.erros = null
                      this.alert = true
                      this.dialog = false
-                    this.flagFuncionario = false
+                    this.flagempresa = false
                 }).catch( e => {
                     this.erros = e
                 })
              }
               
         },
-        alterarFuncionario(item){
-            this.funcionario = {
+        alterarEmpresa(item){
+            this.empresa = {
                 id: item.id,
-                nome_funcionario: item.nome_funcionario,
-                email_funcionario: item.email_funcionario,
+                nome_empresa: item.nome_empresa,
+                cnpj: item.cnpj,
                 ativo: item.ativo
             
             }
-            this.flagFuncionario = true
-            this.editedIndex = this.funcionarios.indexOf(item)
-            //this.funcionario = Object.assign({}, item)
+            this.flagempresa = true
+            this.editedIndex = this.empresas.indexOf(item)
+            //this.empresa = Object.assign({}, item)
             this.dialog = true
         },
-        excluirFuncionario(item){
-             this.funcionario = {
+        excluirEmpresa(item){
+             this.empresa = {
                 id: item.id,
-                nome_funcionario: item.nome_funcionario,
-                email_funcionario: item.email_funcionario,
-                 ativo: item.ativo
+                nome_empresa: item.nome_empresa,
+                cnpj: item.cnpj,
+                ativo: item.ativo
             
             }
         },
@@ -300,26 +300,26 @@ export default {
             else if (valorboleano === false) return 'Não'
             else return ''
         },
-        confirmaExclusaoFuncionario(){
+        confirmaExclusaoEmpresa(){
               this.$api.mutate({
                mutation: gql`
                     mutation (
                         $id: Int
                     ){
-                        excluirFuncionario(
+                        excluirEmpresa(
                              filtro:{
                                 id: $id
                             }
                         ){
-                            id nome_funcionario email_funcionario
+                            id nome_empresa cnpj
                         } 
                     }
                `,
                variables:{
-                   id: this.funcionario.id,
+                   id: this.empresa.id,
                }
            }).then( res =>{
-                   this.dados = res.data.excluirFuncionario
+                   this.dados = res.data.excluirEmpresa
                    this.erros = null
                     this.alert = true
                    this.filtro = {} 
@@ -327,8 +327,8 @@ export default {
                this.erros = e
            })
         },
-        naoConfirmaExclusaoFuncionario(){
-             this.funcionario = {}
+        naoConfirmaExclusaoEmpresa(){
+             this.empresa = {}
         }
 
     },

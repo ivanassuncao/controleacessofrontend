@@ -35,6 +35,11 @@
 				</v-tab>
 
 				<v-tab class="caption"  v-show="usuario">
+					Item Interno
+					<v-icon>tag</v-icon>
+				</v-tab>
+
+				<v-tab class="caption"  v-show="usuario">
 					Empresas Terceiras
 					<v-icon>business</v-icon>
 				</v-tab>
@@ -50,7 +55,7 @@
 				</v-tab>
 
 				<v-tab class="caption"  v-show="usuario">
-					Visitante
+					Acesso Visitante
 					<v-icon>present_to_all</v-icon>
 				</v-tab>
 
@@ -75,7 +80,15 @@
 				</v-tab-item>
 
 				<v-tab-item>
+					<ItemInternoAbas />
+				</v-tab-item>
+
+				<v-tab-item>
 					<EmpresaTerceiraoAbas />
+				</v-tab-item>
+
+				<v-tab-item>
+					<AcessoInternoFuncionario />
 				</v-tab-item>
 
 			</v-tabs>
@@ -93,6 +106,8 @@ import PerfilAbas from './perfil/Abas'
 import FuncionarioAbas from './funcionario/Abas'
 import EmpresaTerceiraoAbas from './empresa_terceira/Abas'
 import EmpresaAbas from './empresa/Abas'
+import ItemInternoAbas from './item_interno/Abas'
+import AcessoInternoFuncionario from './controle_acesso_funcionario/Abas'
 
 export default {
 	computed: {
@@ -105,7 +120,9 @@ export default {
 		PerfilAbas,
 		FuncionarioAbas,
 		EmpresaTerceiraoAbas,
-		EmpresaAbas
+		EmpresaAbas,
+		ItemInternoAbas,
+		AcessoInternoFuncionario
 	},
 
 }

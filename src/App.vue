@@ -9,7 +9,7 @@
     </v-toolbar>
     <v-content
       id="scroll-target"
-      class="scroll-y mt-2"
+      class="scroll-y mt-2 ml-2 mr-2 mb-2"
     >
      <v-layout
             column

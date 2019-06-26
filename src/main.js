@@ -3,6 +3,10 @@ import './plugins/vuetify'
 import './plugins/graphql'
 import App from './App.vue'
 import store from './store'
+const moment = require('moment')
+
+
+moment.locale('pt-br')
 
 Vue.config.productionTip = false
 

@@ -4,9 +4,9 @@
 
 		<v-flex>
 			<UsuarioLogado />
-		</v-flex>
-		<v-flex>
-			<v-tabs centered grow  height=50 light icons-and-text>
+		</v-flex >
+		<v-flex >
+			<v-tabs show-arrows centered height="50" grow light icons-and-text>
 				<v-tabs-slider color="cyan"></v-tabs-slider>
 
 				<v-tab class="caption" v-show="!usuario">
@@ -24,26 +24,12 @@
 					<v-icon>how_to_reg</v-icon>
 				</v-tab>
 				
+				
 				<v-tab class="caption"  v-show="usuario">
-					Empresas
-					<v-icon>business</v-icon>
+					Cadastros
+					<v-icon>dialpad</v-icon>
 				</v-tab>
-
-				<v-tab class="caption"  v-show="usuario">
-					Funcionários
-					<v-icon>people</v-icon>
-				</v-tab>
-
-				<v-tab class="caption"  v-show="usuario">
-					Item Interno
-					<v-icon>tag</v-icon>
-				</v-tab>
-
-				<v-tab class="caption"  v-show="usuario">
-					Empresas Terceiras
-					<v-icon>business</v-icon>
-				</v-tab>
-
+		
 				<v-tab class="caption"  v-show="usuario">
 					Acesso Funcionário
 					<v-icon>call_split</v-icon>
@@ -72,20 +58,9 @@
 				</v-tab-item>
 
 				<v-tab-item>
-					<EmpresaAbas />
+					<CadastroAbas />
 				</v-tab-item>
 
-				<v-tab-item>
-					<FuncionarioAbas />
-				</v-tab-item>
-
-				<v-tab-item>
-					<ItemInternoAbas />
-				</v-tab-item>
-
-				<v-tab-item>
-					<EmpresaTerceiraoAbas />
-				</v-tab-item>
 
 				<v-tab-item>
 					<AcessoInternoFuncionario />
@@ -103,11 +78,8 @@ import AutenticacaoAbas from './autenticacao/Abas'
 import UsuarioLogado from './autenticacao/UsuarioLogado'
 import UsuarioAbas from './usuario/Abas'
 import PerfilAbas from './perfil/Abas'
-import FuncionarioAbas from './funcionario/Abas'
-import EmpresaTerceiraoAbas from './empresa_terceira/Abas'
-import EmpresaAbas from './empresa/Abas'
-import ItemInternoAbas from './item_interno/Abas'
 import AcessoInternoFuncionario from './controle_acesso_funcionario/Abas'
+import CadastroAbas from './cadastro/Abas'
 
 export default {
 	computed: {
@@ -118,11 +90,8 @@ export default {
 		UsuarioLogado,
 		UsuarioAbas,
 		PerfilAbas,
-		FuncionarioAbas,
-		EmpresaTerceiraoAbas,
-		EmpresaAbas,
-		ItemInternoAbas,
-		AcessoInternoFuncionario
+		AcessoInternoFuncionario,
+		CadastroAbas
 	},
 
 }

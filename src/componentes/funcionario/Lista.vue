@@ -40,6 +40,33 @@
           </v-card-actions>
         </v-card>
     </v-dialog>
+      <v-dialog v-model="dialog_veiculo" max-width="500px">
+         <v-card>
+          <v-card-title>
+            <span class="title">Registro do Veiculo </span>
+          </v-card-title>
+           <v-card-text>
+            <span class="caption">{{this.funcionario.nome_funcionario}}</span>
+          </v-card-text>  
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex >
+                    <v-text-field v-model="funcionarioveiculo.placa_veiculo" label="Placa"  mask="AAA-####" class="caption"></v-text-field>
+                    <v-checkbox v-model="funcionarioveiculo.ativo" label="Ativo" class="caption" ></v-checkbox>
+                </v-flex>
+                
+              </v-layout>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="close">Fechar</v-btn>
+            <v-btn color="blue darken-1" flat @click="salvarFuncionarioVeiculo">Salvar</v-btn>
+          </v-card-actions>
+        </v-card>
+    </v-dialog>
     <v-dialog
         v-model="dialogExcluir"
         max-width="290"
@@ -89,7 +116,8 @@
                 Regitrado com Sucesso.
                 </v-alert>
             </v-flex>
-            <v-flex>
+        <v-layout row>
+            <v-flex xs8 class="mr-2">
                 <v-data-table :pagination.sync="pagination" :total-items="totalFuncionarios" :headers="headers" :items="filteredList" 
                     hide-actions class="elevation-1">
                     <template slot="items" slot-scope="props">
@@ -98,7 +126,20 @@
                         <td>{{ props.item.email_funcionario }}</td>
                         <td>{{ getValorBoleano(props.item.ativo) }}</td>
                         <td class="justify-center layout px-0">
-                            
+                             <v-icon
+                                small
+                                class="mr-2"
+                                @click="obterFuncionariosVeiculos(props.item)"
+                            >
+                                search
+                            </v-icon>
+                             <v-icon
+                                small
+                                class="mr-2"
+                                @click="novoFuncionarioVeiculo(props.item)"
+                            >
+                                add
+                            </v-icon>
                             <v-icon
                                 small
                                 class="mr-2"
@@ -117,6 +158,33 @@
                     </template>
                 </v-data-table>
             </v-flex>
+             <v-flex xs4 >
+                <v-data-table :pagination.sync="pagination" :total-items="totalFuncionarios" dark :headers="headersVeiculo" :items="funcionariosveiculos" 
+                    hide-actions class="elevation-1">
+                    <template slot="items" slot-scope="props">
+                        <td>{{ props.item.placa_veiculo }}</td>
+                        <td>{{ getValorBoleano(props.item.ativo) }}</td>
+                        <td class="justify-center layout px-0">
+                            
+                            <v-icon
+                                small
+                                class="mr-2"
+                                @click="alterarFuncionarioVeiculo(props.item)"
+                            >
+                                edit
+                            </v-icon>
+                             
+                            <v-icon
+                                small
+                                @click="[excluirFuncionarioVeiculo(props.item),dialogExcluir = true]"
+                            >
+                                delete
+                            </v-icon>
+                        </td>        
+                    </template>
+                </v-data-table>
+            </v-flex>
+        </v-layout>  
         </v-layout>
         
     </v-container>
@@ -143,9 +211,11 @@ export default {
     data() {
         return {
             dialog: false,
+            dialog_veiculo: false,
             dialogExcluir: false,
             totalFuncionarios: 0,
             flagFuncionario: false,
+            flagveiculo: false,
             pagination: {},
             search: '',
             editedIndex: -1,
@@ -154,6 +224,8 @@ export default {
             alert: false,
             funcionarios: [],
             funcionario: {},
+            funcionariosveiculos: [],
+            funcionarioveiculo: {},
             dados: null,
             headers: [
                 { text: 'ID', value: 'id' },
@@ -163,9 +235,22 @@ export default {
                 { text: 'Ações', value: 'name', sortable: false }
                
             ],
+             headersVeiculo: [
+                { text: 'Placa', value: 'placa_veiculo' },
+                { text: 'Ativo', value: 'valorboleano' }, 
+                { text: 'Ações', value: 'name', sortable: false }
+               
+            ],
         }
     },
     methods: {
+        novoFuncionarioVeiculo(item){
+            this.funcionarioveiculo.funcionario_id =  item.id
+            this.funcionarioveiculo.nome_funcionario = item.nome_funcionario
+            this.obterFuncionariosVeiculos(item)
+
+            this.dialog_veiculo = true
+        },
         obterFuncionarios() {
 
                 this.$api.query({
@@ -187,6 +272,37 @@ export default {
                 })
                 
               
+        },
+        obterFuncionariosVeiculos(item) {
+
+                this.funcionario.id = item.id
+              
+                this.$api.query({
+                query: gql`
+                    query(
+                        $funcionario_id: Int
+                    ){
+                        funcionarioveiculoid(
+                            filtro:{
+                                 funcionario_id: $funcionario_id
+                            }
+                        ) {
+                            id placa_veiculo ativo
+                        }
+                    }
+                `,
+                variables:{
+                    funcionario_id: this.funcionario.id
+                },
+                fetchPolicy: 'network-only'
+                }).then( res =>{
+                    this.funcionariosveiculos = res.data.funcionarioveiculoid
+                    this.erros = null
+                }).catch( e =>{
+                    this.funcionariosveiculos = []
+                    this.erros = e 
+                })
+                  
         },
         salvarFuncionario() {
 
@@ -270,6 +386,85 @@ export default {
              }
               
         },
+        salvarFuncionarioVeiculo() {
+
+             if(!this.flagveiculo){
+                  this.$api.mutate({
+                    mutation: gql `
+                        mutation (
+                            $funcionario_id: Int!
+                            $placa_veiculo: String!
+                            $ativo: Boolean
+                        ){
+                            novoFuncionarioVeiculo (
+                                dados:{
+                                    funcionario_id: $funcionario_id
+                                    placa_veiculo: $placa_veiculo
+                                    ativo: $ativo
+                                }
+                            ){
+                                id placa_veiculo ativo
+                            }
+                        }
+               `,
+               variables:{
+                   funcionario_id: this.funcionarioveiculo.funcionario_id,
+                   placa_veiculo: this.funcionarioveiculo.placa_veiculo,
+                   ativo: this.funcionarioveiculo.ativo
+               }
+           }).then(res=>{
+                this.dados = res.data.novoFuncionarioVeiculo
+                this.funcionarioveiculo = {}
+                this.erros = null
+                this.alert = true
+                this.dialog_veiculo = false
+                this.flagveiculo = false  
+           }).catch(e=>{
+               this.erros = e
+           })
+             }else{
+                this.$api.mutate({
+                 mutation: gql `
+                    mutation (
+                        $idFiltro: Int
+                        $placa_veiculo: String
+                        $ativo: Boolean
+
+                    ){
+                        alterarFuncionarioVeiculo(
+                            filtro:{
+                                 id: $idFiltro
+                            }
+                           dados:{
+                                placa_veiculo: $placa_veiculo
+                                ativo: $ativo
+                           }
+                           
+                        ){
+                            id placa_veiculo ativo
+                        }
+                    }
+               `,
+                    variables:{
+                        idFiltro: this.funcionarioveiculo.id,
+                        placa_veiculo: this.funcionarioveiculo.placa_veiculo,
+                        ativo: this.funcionarioveiculo.ativo
+
+                    }
+                }).then( res => {
+                    this.dados = res.data.alterarFuncionarioVeiculo
+                    this.funcionarioveiculo = {}
+                    this.filtro = {}
+                    this.erros = null
+                    this.alert = true
+                    this.dialog_veiculo = false
+                    this.flagveiculo = false
+                }).catch( e => {
+                    this.erros = e
+                })
+             }
+              
+        },
         alterarFuncionario(item){
             this.funcionario = {
                 id: item.id,
@@ -283,6 +478,19 @@ export default {
             //this.funcionario = Object.assign({}, item)
             this.dialog = true
         },
+         alterarFuncionarioVeiculo(item){
+            this.funcionarioveiculo = {
+                id: item.id,
+                funcionario_id: item.funcionario_id,
+                placa_veiculo: item.placa_veiculo,
+                ativo: item.ativo
+            
+            }
+            this.flagveiculo = true
+            this.editedIndex = this.funcionariosveiculos.indexOf(item)
+            //this.empresaterceira = Object.assign({}, item)
+            this.dialog_veiculo = true
+        },
         excluirFuncionario(item){
              this.funcionario = {
                 id: item.id,
@@ -292,8 +500,17 @@ export default {
             
             }
         },
+        excluirFuncionarioVeiculo(item){
+             this.funcionarioveiculo = {
+               id: item.id,
+                funcionario_id: item.funcionario_id,
+                placa_veiculo: item.placa_veiculo,
+                ativo: item.ativo
+            }
+        },
         close () {
             this.dialog = false
+            this.dialog_veiculo = false
         },
         getValorBoleano (valorboleano) {
             if (valorboleano === true) return 'Sim'

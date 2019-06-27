@@ -61,9 +61,16 @@
 					<CadastroAbas />
 				</v-tab-item>
 
-
 				<v-tab-item>
 					<AcessoInternoFuncionario />
+				</v-tab-item>
+
+				<v-tab-item>
+					<AcessoEmpresaTerceira />
+				</v-tab-item>
+
+				<v-tab-item>
+					<AcessoVisitante />
 				</v-tab-item>
 
 			</v-tabs>
@@ -80,6 +87,8 @@ import UsuarioAbas from './usuario/Abas'
 import PerfilAbas from './perfil/Abas'
 import AcessoInternoFuncionario from './controle_acesso_funcionario/Abas'
 import CadastroAbas from './cadastro/Abas'
+import AcessoEmpresaTerceira from './controle_acesso_empresa_terceira/Abas'
+import AcessoVisitante from './controle_acesso_visitante/Abas'
 
 export default {
 	computed: {
@@ -91,7 +100,9 @@ export default {
 		UsuarioAbas,
 		PerfilAbas,
 		AcessoInternoFuncionario,
-		CadastroAbas
+		CadastroAbas,
+		AcessoEmpresaTerceira,
+		AcessoVisitante
 	},
 
 }

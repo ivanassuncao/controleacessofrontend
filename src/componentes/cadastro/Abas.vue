@@ -10,11 +10,11 @@
 			</v-tab>
 
             <v-tab class="caption">
-					Funcionários
+					Funcionário
 			</v-tab>
 
             <v-tab class="caption">
-					Empresas Terceiras
+					Empresa Terceira
 			</v-tab>
 
             <v-tab class="caption">

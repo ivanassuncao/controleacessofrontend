@@ -1,6 +1,6 @@
 <template>
     <v-container fluid>
-        <v-tabs class="title" height=35 dark color="blue-grey darken-4"
+        <v-tabs class="title" dark height=35 color="blue-grey darken-4"
             slider-color="blue">
             <v-tab class="caption" ripple>
                 Lista

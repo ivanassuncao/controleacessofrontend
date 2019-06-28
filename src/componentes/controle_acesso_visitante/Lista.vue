@@ -27,7 +27,7 @@
 
                     <v-text-field v-model="controleacessovisitante.nome_empresa_visitante"   label="Empresa do visitante" class="caption"></v-text-field>
                     <v-text-field v-model="controleacessovisitante.nome_visitante"  label="Nome do visitante" class="caption"></v-text-field>
-                    <v-text-field v-model="controleacessovisitante.cpf" mask="###.###.###-##" label="CPF" class="caption"></v-text-field>
+                    <v-text-field v-model="controleacessovisitante.cpf_visitante" mask="###.###.###-##" label="CPF" class="caption"></v-text-field>
 
                     <v-select class="caption" label="Local"
                             v-model="controleacessovisitante.empresa_id"
@@ -370,7 +370,7 @@ export default {
                            } 
                         )
                          {
-                           id data_entrada empresa_id tipo_veiculo_id setor_id nome_empresa nome_empresa_visitante nome_visitante cpf nome_setor nome_tipo_veiculo placa_veiculo data_saida
+                           id data_entrada empresa_id tipo_veiculo_id setor_id nome_empresa nome_empresa_visitante nome_visitante cpf_visitante nome_setor nome_tipo_veiculo placa_veiculo data_saida
                         }
                     }
                 `,
@@ -405,7 +405,7 @@ export default {
                            } 
                         )
                          {
-                           id data_entrada empresa_id tipo_veiculo_id setor_id nome_empresa nome_empresa_visitante nome_visitante cpf nome_setor nome_tipo_veiculo placa_veiculo data_saida
+                           id data_entrada empresa_id tipo_veiculo_id setor_id nome_empresa nome_empresa_visitante nome_visitante cpf_visitante nome_setor nome_tipo_veiculo placa_veiculo data_saida
                         }
                     }
                 `,
@@ -438,7 +438,7 @@ export default {
                             $empresa_id: Int!
                             $nome_empresa_visitante: String!
                             $nome_visitante: String!
-                            $cpf: String
+                            $cpf_visitante: String
                             $tipo_veiculo_id: Int
                             $setor_id: Int!
                             $placa_veiculo: String
@@ -449,13 +449,13 @@ export default {
                                     empresa_id: $empresa_id
                                     nome_empresa_visitante: $nome_empresa_visitante
                                     nome_visitante: $nome_visitante
-                                    cpf: $cpf
+                                    cpf_visitante: $cpf_visitante
                                     tipo_veiculo_id: $tipo_veiculo_id
                                     setor_id: $setor_id
                                     placa_veiculo: $placa_veiculo
                                 }
                             ){
-                                id data_entrada empresa_id nome_empresa_visitante nome_visitante tipo_veiculo_id placa_veiculo setor_id data_saida
+                                id data_entrada empresa_id nome_empresa_visitante nome_visitante cpf_visitante tipo_veiculo_id placa_veiculo setor_id data_saida
                             }
                         }
                `,
@@ -464,7 +464,7 @@ export default {
                    empresa_id: this.controleacessovisitante.empresa_id,
                    nome_empresa_visitante: this.controleacessovisitante.nome_empresa_visitante,
                    nome_visitante: this.controleacessovisitante.nome_visitante,
-                   cpf: this.controleacessovisitante.cpf,
+                   cpf_visitante: this.controleacessovisitante.cpf_visitante,
                    tipo_veiculo_id: this.controleacessovisitante.tipo_veiculo_id,
                    setor_id: this.controleacessovisitante.setor_id,
                    placa_veiculo: this.controleacessovisitante.placa_veiculo
@@ -490,7 +490,7 @@ export default {
                         $empresa_id: Int!
                         $nome_empresa_visitante: String!
                         $nome_visitante: String!
-                        $cpf: String
+                        $cpf_visitante: String
                         $tipo_veiculo_id: Int
                         $setor_id: Int!
                         $placa_veiculo: String
@@ -506,7 +506,7 @@ export default {
                                     empresa_id: $empresa_id
                                     nome_empresa_visitante: $nome_empresa_visitante
                                     nome_visitante: $nome_visitante
-                                    cpf: $cpf
+                                    cpf_visitante: $cpf_visitante
                                     tipo_veiculo_id: $tipo_veiculo_id
                                     setor_id: $setor_id
                                     placa_veiculo: $placa_veiculo
@@ -514,7 +514,7 @@ export default {
                            }
                            
                         ){
-                            id data_entrada empresa_id nome_empresa_visitante nome_visitante tipo_veiculo_id placa_veiculo setor_id data_saida
+                            id data_entrada empresa_id nome_empresa_visitante  cpf_visitante nome_visitante tipo_veiculo_id placa_veiculo setor_id data_saida
                         }
                     }
                      `,
@@ -523,7 +523,7 @@ export default {
                         empresa_id: this.controleacessovisitante.empresa_id,
                         nome_empresa_visitante: this.controleacessovisitante.nome_empresa_visitante,
                         nome_visitante: this.controleacessovisitante.nome_visitante,
-                        cpf: this.controleacessovisitante.cpf,
+                        cpf_visitante: this.controleacessovisitante.cpf_visitante,
                         tipo_veiculo_id: this.controleacessovisitante.tipo_veiculo_id,
                         setor_id: this.controleacessovisitante.setor_id,
                         data_saida: this.formatDateTime(dNow),

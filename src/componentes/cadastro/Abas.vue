@@ -25,6 +25,10 @@
 					Tipo de Veículo
 			</v-tab>
 
+            <v-tab class="caption">
+					Gerente
+			</v-tab>
+
             <v-tab-item>
                 <EmpresaAbas />
             </v-tab-item>
@@ -49,6 +53,10 @@
                 <TipoVeiculoAbas />
             </v-tab-item>
 
+             <v-tab-item>
+                <GerenteAbas />
+            </v-tab-item>
+
         </v-tabs>
     </v-container>
 </template>
@@ -60,6 +68,7 @@ import FuncionarioAbas from '../funcionario/Abas'
 import EmpresaTerceiraoAbas from '../empresa_terceira/Abas'
 import ItemInternoAbas from '../item_interno/Abas'
 import TipoVeiculoAbas from '../tipo_veiculo/Abas'
+import GerenteAbas from '../gerente/Abas'
 
 export default {
     components: { EmpresaAbas,
@@ -67,7 +76,9 @@ export default {
                     FuncionarioAbas,
                     EmpresaTerceiraoAbas,
                     ItemInternoAbas,
-                    TipoVeiculoAbas }
+                    TipoVeiculoAbas,
+                    GerenteAbas
+                     }
 }
 </script>
 

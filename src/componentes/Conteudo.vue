@@ -45,6 +45,11 @@
 					<v-icon>present_to_all</v-icon>
 				</v-tab>
 
+				<v-tab class="caption"  v-show="usuario">
+					Requisição Interna
+					<v-icon>list</v-icon>
+				</v-tab>
+
 				<v-tab-item v-show="!usuario">
 					<AutenticacaoAbas />
 				</v-tab-item>
@@ -73,6 +78,10 @@
 					<AcessoVisitante />
 				</v-tab-item>
 
+				<v-tab-item>
+					<Requisicoesinterna />
+				</v-tab-item>
+
 			</v-tabs>
 		</v-flex>
 	</v-layout>
@@ -89,6 +98,7 @@ import AcessoInternoFuncionario from './controle_acesso_funcionario/Abas'
 import CadastroAbas from './cadastro/Abas'
 import AcessoEmpresaTerceira from './controle_acesso_empresa_terceira/Abas'
 import AcessoVisitante from './controle_acesso_visitante/Abas'
+import Requisicoesinterna from './requisicoes_interna/Abas'
 
 export default {
 	computed: {
@@ -102,7 +112,8 @@ export default {
 		AcessoInternoFuncionario,
 		CadastroAbas,
 		AcessoEmpresaTerceira,
-		AcessoVisitante
+		AcessoVisitante,
+		Requisicoesinterna
 	},
 
 }
